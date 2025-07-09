@@ -1,6 +1,9 @@
 package com.example.UMS_MultiDB.model.dto;
 
+import com.example.UMS_MultiDB.model.enums.Role;
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -44,4 +47,7 @@ public class PersonRequestDTO {
     @NotBlank(message = "Email cannot be empty")
     @Email(message = "Email is not valid")
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

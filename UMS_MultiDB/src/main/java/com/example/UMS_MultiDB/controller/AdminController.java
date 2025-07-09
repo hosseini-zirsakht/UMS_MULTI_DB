@@ -35,9 +35,8 @@ public class AdminController {
 
     @PostMapping("/person/register")
     public ResponseEntity<Person> registerPerson(
-            @RequestBody PersonRequestDTO personRequestDTO,
-            @RequestParam Role role) {
+            @RequestBody PersonRequestDTO personRequestDTO) {
 
-        return ResponseEntity.ok(adminService.register(personRequestDTO, role));
+        return ResponseEntity.ok(adminService.register(personRequestDTO, personRequestDTO.getRole()));
     }
 }

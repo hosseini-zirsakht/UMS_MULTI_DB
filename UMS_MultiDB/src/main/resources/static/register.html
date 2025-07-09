@@ -368,7 +368,7 @@
 
             // پاک کردن خطاهای قبلی
             errorElement.textContent = '';
-            field.classList.remove('error-input');
+            field.classList .remove('error-input');
 
             // اگر فیلد خالی است خطا نشان نده
             if (fieldValue === '') {
@@ -510,12 +510,18 @@
         }
 
         function submitForm(formData) {
+            // تبدیل role از string به مقدار صحیح
+            const requestData = {
+                ...formData,
+                role: formData.role // دیگر نیازی به تبدیل نیست چون مقادیر enum با مقادیر سرور همخوانی دارند
+            };
+
             fetch('http://localhost:8080/admin/person/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(requestData)
             })
                 .then(async response => {
                     if (!response.ok) {
@@ -529,7 +535,6 @@
                 })
                 .catch(error => {
                     if (error.errors) {
-                        // تبدیل نام فیلدها به camelCase برای تطابق با HTML
                         const formattedErrors = {};
                         for (const field in error.errors) {
                             const camelCaseField = field.replace(/([-_][a-z])/g, group =>
@@ -544,7 +549,6 @@
                     }
                 });
         }
-
         function showSuccessMessage() {
             const successMessage = document.getElementById('successMessage');
             const form = document.getElementById('teacherForm');
