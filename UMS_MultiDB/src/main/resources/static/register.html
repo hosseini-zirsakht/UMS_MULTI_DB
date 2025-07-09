@@ -1,3 +1,577 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="fa" dir="rtl">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>ثبت نام</title>-->
+<!--    <style>-->
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            background: linear-gradient(135deg, #6a11cb, #2575fc);-->
+<!--            color: #fff;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            min-height: 100vh;-->
+<!--            padding: 20px;-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            background: rgba(255, 255, 255, 0.1);-->
+<!--            backdrop-filter: blur(12px);-->
+<!--            -webkit-backdrop-filter: blur(12px);-->
+<!--            border-radius: 20px;-->
+<!--            padding: 30px;-->
+<!--            width: 100%;-->
+<!--            max-width: 800px;-->
+<!--            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);-->
+<!--            border: 1px solid rgba(255, 255, 255, 0.18);-->
+<!--            animation: fadeIn 0.8s ease-out;-->
+<!--        }-->
+
+<!--        h1 {-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 30px;-->
+<!--            font-size: 28px;-->
+<!--            font-weight: 700;-->
+<!--            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+
+<!--        .form-grid {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: 1fr 1fr;-->
+<!--            gap: 20px;-->
+<!--        }-->
+
+<!--        .form-group {-->
+<!--            margin-bottom: 20px;-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        label {-->
+<!--            display: block;-->
+<!--            margin-bottom: 8px;-->
+<!--            font-weight: 500;-->
+<!--            color: rgba(255, 255, 255, 0.9);-->
+<!--        }-->
+
+<!--        input, select {-->
+<!--            width: 100%;-->
+<!--            padding: 12px 15px;-->
+<!--            border: none;-->
+<!--            border-radius: 10px;-->
+<!--            font-size: 15px;-->
+<!--            background: rgba(255, 255, 255, 0.15);-->
+<!--            color: #fff;-->
+<!--            outline: none;-->
+<!--            transition: all 0.3s ease;-->
+<!--            border: 1px solid rgba(255, 255, 255, 0.1);-->
+<!--        }-->
+
+<!--        input::placeholder, select {-->
+<!--            color: rgba(255, 255, 255, 0.6);-->
+<!--        }-->
+
+<!--        input:focus, select:focus {-->
+<!--            background: rgba(255, 255, 255, 0.25);-->
+<!--            border-color: rgba(255, 255, 255, 0.3);-->
+<!--            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.3);-->
+<!--        }-->
+
+<!--        /* استایل‌های بخش انتخاب نقش */-->
+<!--        .role-selection {-->
+<!--            grid-column: span 2;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        .role-options {-->
+<!--            display: flex;-->
+<!--            flex-wrap: wrap;-->
+<!--            gap: 10px;-->
+<!--            margin-top: 8px;-->
+<!--        }-->
+
+<!--        .role-option {-->
+<!--            flex: 1;-->
+<!--            min-width: 120px;-->
+<!--        }-->
+
+<!--        .role-option input[type="radio"] {-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        .role-option label {-->
+<!--            display: block;-->
+<!--            padding: 12px 15px;-->
+<!--            background: rgba(255, 255, 255, 0.1);-->
+<!--            border-radius: 10px;-->
+<!--            text-align: center;-->
+<!--            cursor: pointer;-->
+<!--            transition: all 0.3s ease;-->
+<!--            border: 1px solid rgba(255, 255, 255, 0.2);-->
+<!--            position: relative;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .role-option label:hover {-->
+<!--            background: rgba(255, 255, 255, 0.2);-->
+<!--        }-->
+
+<!--        .role-option input[type="radio"]:checked + label {-->
+<!--            background: linear-gradient(135deg, #2575fc, #6a11cb);-->
+<!--            border-color: rgba(255, 255, 255, 0.4);-->
+<!--            box-shadow: 0 4px 15px rgba(37, 117, 252, 0.3);-->
+<!--        }-->
+
+<!--        .role-option input[type="radio"]:checked + label::after {-->
+<!--            content: '✓';-->
+<!--            position: absolute;-->
+<!--            top: 5px;-->
+<!--            left: 5px;-->
+<!--            font-size: 12px;-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .role-icon {-->
+<!--            display: block;-->
+<!--            font-size: 24px;-->
+<!--            margin-bottom: 5px;-->
+<!--        }-->
+
+<!--        .submit-btn {-->
+<!--            grid-column: span 2;-->
+<!--            background: linear-gradient(to right, #2575fc, #6a11cb);-->
+<!--            color: white;-->
+<!--            padding: 14px;-->
+<!--            border: none;-->
+<!--            border-radius: 10px;-->
+<!--            font-size: 16px;-->
+<!--            font-weight: 600;-->
+<!--            cursor: pointer;-->
+<!--            transition: all 0.3s ease;-->
+<!--            margin-top: 10px;-->
+<!--            box-shadow: 0 4px 15px rgba(37, 117, 252, 0.3);-->
+<!--        }-->
+
+<!--        .submit-btn:hover {-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 6px 20px rgba(37, 117, 252, 0.4);-->
+<!--        }-->
+
+<!--        @keyframes fadeIn {-->
+<!--            from {-->
+<!--                opacity: 0;-->
+<!--                transform: translateY(-20px);-->
+<!--            }-->
+<!--            to {-->
+<!--                opacity: 1;-->
+<!--                transform: translateY(0);-->
+<!--            }-->
+<!--        }-->
+
+<!--        /* پیام موفقیت */-->
+<!--        .success-message {-->
+<!--            display: none;-->
+<!--            background: rgba(46, 213, 115, 0.2);-->
+<!--            padding: 20px;-->
+<!--            border-radius: 10px;-->
+<!--            margin-bottom: 25px;-->
+<!--            text-align: center;-->
+<!--            border: 1px solid rgba(46, 213, 115, 0.3);-->
+<!--            animation: fadeIn 0.5s ease-out;-->
+<!--        }-->
+
+<!--        /* استایل خطاها */-->
+<!--        .error-message {-->
+<!--            color: #ff6b6b;-->
+<!--            font-size: 13px;-->
+<!--            margin-bottom: 5px;-->
+<!--            min-height: 18px;-->
+<!--            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);-->
+<!--            animation: fadeIn 0.3s ease-out;-->
+<!--        }-->
+
+<!--        .error-input {-->
+<!--            border: 1px solid #ff6b6b !important;-->
+<!--            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2) !important;-->
+<!--        }-->
+
+<!--        /* پیام خطای سرور */-->
+<!--        .server-error {-->
+<!--            background: rgba(255, 107, 107, 0.2);-->
+<!--            padding: 15px;-->
+<!--            border-radius: 10px;-->
+<!--            margin-bottom: 20px;-->
+<!--            text-align: center;-->
+<!--            border: 1px solid rgba(255, 107, 107, 0.3);-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        /* Responsive Design */-->
+<!--        @media (max-width: 768px) {-->
+<!--            .form-grid {-->
+<!--                grid-template-columns: 1fr;-->
+<!--            }-->
+
+<!--            .submit-btn {-->
+<!--                grid-column: span 1;-->
+<!--            }-->
+
+<!--            .role-option {-->
+<!--                min-width: calc(50% - 10px);-->
+<!--            }-->
+<!--        }-->
+
+<!--        @media (max-width: 480px) {-->
+<!--            .role-option {-->
+<!--                min-width: 100%;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts.css" rel="stylesheet">-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+<!--</head>-->
+
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <div class="success-message" id="successMessage">-->
+<!--        <h3>ثبت نام با موفقیت انجام شد!</h3>-->
+<!--        <p>در حال انتقال به صفحه ورود...</p>-->
+<!--    </div>-->
+
+<!--    <div class="server-error" id="serverError"></div>-->
+
+<!--    <h1>ثبت نام</h1>-->
+<!--    <form id="teacherForm">-->
+<!--        <div class="form-grid">-->
+<!--            &lt;!&ndash; بخش انتخاب نقش &ndash;&gt;-->
+<!--            <div class="form-group role-selection">-->
+<!--                <label>نقش کاربر:</label>-->
+<!--                <div class="error-message" id="roleError"></div>-->
+<!--                <div class="role-options">-->
+<!--                    <div class="role-option">-->
+<!--                        <input type="radio" id="roleRegular" name="role" value="REGULAR_USER" checked>-->
+<!--                        <label for="roleRegular">-->
+<!--                            <i class="fas fa-user role-icon"></i>-->
+<!--                            کاربر عادی-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--                    <div class="role-option">-->
+<!--                        <input type="radio" id="roleDeveloper" name="role" value="DEVELOPER">-->
+<!--                        <label for="roleDeveloper">-->
+<!--                            <i class="fas fa-code role-icon"></i>-->
+<!--                            توسعه دهنده-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--                    <div class="role-option">-->
+<!--                        <input type="radio" id="roleTester" name="role" value="TEST_USER">-->
+<!--                        <label for="roleTester">-->
+<!--                            <i class="fas fa-flask role-icon"></i>-->
+<!--                            تست کننده-->
+<!--                        </label>-->
+<!--                    </div>-->
+<!--&lt;!&ndash;                    <div class="role-option">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <input type="radio" id="roleAdmin" name="role" value="ADMIN">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <label for="roleAdmin">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <i class="fas fa-user-shield role-icon"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;                            مدیر سیستم&ndash;&gt;-->
+<!--&lt;!&ndash;                        </label>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label for="firstName">نام:</label>-->
+<!--                <div class="error-message" id="firstNameError"></div>-->
+<!--                <input type="text" id="firstName" name="firstName" placeholder="نام خود را وارد کنید">-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label for="lastName">نام خانوادگی:</label>-->
+<!--                <div class="error-message" id="lastNameError"></div>-->
+<!--                <input type="text" id="lastName" name="lastName" placeholder="نام خانوادگی خود را وارد کنید">-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label for="username">نام کاربری:</label>-->
+<!--                <div class="error-message" id="usernameError"></div>-->
+<!--                <input type="text" id="username" name="username" placeholder="نام کاربری خود را انتخاب کنید">-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label for="password">رمز عبور:</label>-->
+<!--                <div class="error-message" id="passwordError"></div>-->
+<!--                <input type="password" id="password" name="password" placeholder="رمز عبور خود را وارد کنید">-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label for="nationalCode">کد ملی:</label>-->
+<!--                <div class="error-message" id="nationalCodeError"></div>-->
+<!--                <input type="text" id="nationalCode" name="nationalCode" placeholder="کد ملی خود را وارد کنید">-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label for="phoneNumber">شماره تلفن:</label>-->
+<!--                <div class="error-message" id="phoneNumberError"></div>-->
+<!--                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="شماره تلفن خود را وارد کنید">-->
+<!--            </div>-->
+
+<!--            <div class="form-group">-->
+<!--                <label for="email">ایمیل:</label>-->
+<!--                <div class="error-message" id="emailError"></div>-->
+<!--                <input type="email" id="email" name="email" placeholder="ایمیل خود را وارد کنید">-->
+<!--            </div>-->
+
+<!--            <button type="submit" class="submit-btn">ثبت نام</button>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--        const form = document.getElementById('teacherForm');-->
+<!--        const serverError = document.getElementById('serverError');-->
+
+<!--        // اعتبارسنجی در زمان تایپ-->
+<!--        document.querySelectorAll('input').forEach(input => {-->
+<!--            input.addEventListener('input', function () {-->
+<!--                validateField(this);-->
+<!--            });-->
+<!--        });-->
+
+<!--        form.addEventListener('submit', function (event) {-->
+<!--            event.preventDefault();-->
+<!--            clearErrors();-->
+<!--            serverError.style.display = 'none';-->
+
+<!--            const formData = getFormData();-->
+<!--            const clientErrors = validateForm(formData);-->
+
+<!--            if (Object.keys(clientErrors).length > 0) {-->
+<!--                displayValidationErrors(clientErrors);-->
+<!--                return;-->
+<!--            }-->
+
+<!--            submitForm(formData);-->
+<!--        });-->
+
+<!--        function validateField(field) {-->
+<!--            const fieldId = field.id;-->
+<!--            const fieldValue = field.value.trim();-->
+<!--            const errorElement = document.getElementById(`${fieldId}Error`);-->
+
+<!--            // پاک کردن خطاهای قبلی-->
+<!--            errorElement.textContent = '';-->
+<!--            field.classList .remove('error-input');-->
+
+<!--            // اگر فیلد خالی است خطا نشان نده-->
+<!--            if (fieldValue === '') {-->
+<!--                return;-->
+<!--            }-->
+
+<!--            let error = '';-->
+
+<!--            switch(fieldId) {-->
+<!--                case 'firstName':-->
+<!--                case 'lastName':-->
+<!--                    if (fieldValue.length < 2 || fieldValue.length > 50) {-->
+<!--                        error = 'باید بین ۲ تا ۵۰ کاراکتر باشد';-->
+<!--                    }-->
+<!--                    break;-->
+<!--                case 'username':-->
+<!--                    if (fieldValue.length < 4 || fieldValue.length > 20) {-->
+<!--                        error = 'باید بین ۴ تا ۲۰ کاراکتر باشد';-->
+<!--                    }-->
+<!--                    break;-->
+<!--                case 'password':-->
+<!--                    if (fieldValue.length < 6 || fieldValue.length > 20) {-->
+<!--                        error = 'باید بین ۶ تا ۲۰ کاراکتر باشد';-->
+<!--                    }-->
+<!--                    break;-->
+<!--                case 'nationalCode':-->
+<!--                    if (!/^\d{10}$/.test(fieldValue)) {-->
+<!--                        error = 'کد ملی باید ۱۰ رقم باشد';-->
+<!--                    }-->
+<!--                    break;-->
+<!--                case 'phoneNumber':-->
+<!--                    if (!/^09\d{9}$/.test(fieldValue)) {-->
+<!--                        error = 'شماره تلفن معتبر نیست (مثال: 09123456789)';-->
+<!--                    }-->
+<!--                    break;-->
+<!--                case 'email':-->
+<!--                    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fieldValue)) {-->
+<!--                        error = 'ایمیل معتبر نیست';-->
+<!--                    }-->
+<!--                    break;-->
+<!--            }-->
+
+<!--            if (error) {-->
+<!--                errorElement.textContent = error;-->
+<!--                field.classList.add('error-input');-->
+<!--            }-->
+<!--        }-->
+
+<!--        function clearErrors() {-->
+<!--            // پاک کردن تمام پیام‌های خطا-->
+<!--            document.querySelectorAll('.error-message').forEach(el => {-->
+<!--                el.textContent = '';-->
+<!--            });-->
+
+<!--            // حذف استایل خطا از تمام فیلدها-->
+<!--            document.querySelectorAll('.error-input').forEach(el => {-->
+<!--                el.classList.remove('error-input');-->
+<!--            });-->
+<!--        }-->
+
+<!--        function displayValidationErrors(errors) {-->
+<!--            // نمایش خطاهای اعتبارسنجی-->
+<!--            for (const field in errors) {-->
+<!--                const errorElement = document.getElementById(`${field}Error`);-->
+<!--                const inputElement = document.getElementById(field);-->
+
+<!--                if (errorElement && inputElement) {-->
+<!--                    errorElement.textContent = errors[field];-->
+<!--                    inputElement.classList.add('error-input');-->
+<!--                }-->
+<!--            }-->
+
+<!--            // اسکرول به اولین فیلد دارای خطا-->
+<!--            const firstError = document.querySelector('.error-input');-->
+<!--            if (firstError) {-->
+<!--                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });-->
+<!--            }-->
+<!--        }-->
+
+<!--        function getFormData() {-->
+<!--            return {-->
+<!--                firstName: document.getElementById('firstName').value.trim(),-->
+<!--                lastName: document.getElementById('lastName').value.trim(),-->
+<!--                username: document.getElementById('username').value.trim(),-->
+<!--                password: document.getElementById('password').value.trim(),-->
+<!--                nationalCode: document.getElementById('nationalCode').value.trim(),-->
+<!--                phoneNumber: document.getElementById('phoneNumber').value.trim(),-->
+<!--                email: document.getElementById('email').value.trim(),-->
+<!--                role: document.querySelector('input[name="role"]:checked').value-->
+<!--            };-->
+<!--        }-->
+
+<!--        function validateForm(formData) {-->
+<!--            const errors = {};-->
+
+<!--            if (!formData.firstName) {-->
+<!--                errors.firstName = 'نام الزامی است';-->
+<!--            } else if (formData.firstName.length < 2 || formData.firstName.length > 50) {-->
+<!--                errors.firstName = 'نام باید بین ۲ تا ۵۰ کاراکتر باشد';-->
+<!--            }-->
+
+<!--            if (!formData.lastName) {-->
+<!--                errors.lastName = 'نام خانوادگی الزامی است';-->
+<!--            } else if (formData.lastName.length < 2 || formData.lastName.length > 50) {-->
+<!--                errors.lastName = 'نام خانوادگی باید بین ۲ تا ۵۰ کاراکتر باشد';-->
+<!--            }-->
+
+<!--            if (!formData.username) {-->
+<!--                errors.username = 'نام کاربری الزامی است';-->
+<!--            } else if (formData.username.length < 4 || formData.username.length > 20) {-->
+<!--                errors.username = 'نام کاربری باید بین ۴ تا ۲۰ کاراکتر باشد';-->
+<!--            }-->
+
+<!--            if (!formData.password) {-->
+<!--                errors.password = 'رمز عبور الزامی است';-->
+<!--            } else if (formData.password.length < 6 || formData.password.length > 20) {-->
+<!--                errors.password = 'رمز عبور باید بین ۶ تا ۲۰ کاراکتر باشد';-->
+<!--            }-->
+
+<!--            if (!formData.nationalCode) {-->
+<!--                errors.nationalCode = 'کد ملی الزامی است';-->
+<!--            } else if (!/^\d{10}$/.test(formData.nationalCode)) {-->
+<!--                errors.nationalCode = 'کد ملی باید ۱۰ رقم باشد';-->
+<!--            }-->
+
+<!--            if (!formData.phoneNumber) {-->
+<!--                errors.phoneNumber = 'شماره تلفن الزامی است';-->
+<!--            } else if (!/^09\d{9}$/.test(formData.phoneNumber)) {-->
+<!--                errors.phoneNumber = 'شماره تلفن معتبر نیست (مثال: 09123456789)';-->
+<!--            }-->
+
+<!--            if (!formData.email) {-->
+<!--                errors.email = 'ایمیل الزامی است';-->
+<!--            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {-->
+<!--                errors.email = 'ایمیل معتبر نیست';-->
+<!--            }-->
+
+<!--            return errors;-->
+<!--        }-->
+
+<!--        function submitForm(formData) {-->
+<!--            // تبدیل role از string به مقدار صحیح-->
+<!--            const requestData = {-->
+<!--                ...formData,-->
+<!--                role: formData.role // دیگر نیازی به تبدیل نیست چون مقادیر enum با مقادیر سرور همخوانی دارند-->
+<!--            };-->
+
+<!--            fetch('http://localhost:8080/admin/person/register', {-->
+<!--                method: 'POST',-->
+<!--                headers: {-->
+<!--                    'Content-Type': 'application/json'-->
+<!--                },-->
+<!--                body: JSON.stringify(requestData)-->
+<!--            })-->
+<!--                .then(async response => {-->
+<!--                    if (!response.ok) {-->
+<!--                        const errorData = await response.json();-->
+<!--                        return Promise.reject(errorData);-->
+<!--                    }-->
+<!--                    return response.json();-->
+<!--                })-->
+<!--                .then(data => {-->
+<!--                    showSuccessMessage();-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    if (error.errors) {-->
+<!--                        const formattedErrors = {};-->
+<!--                        for (const field in error.errors) {-->
+<!--                            const camelCaseField = field.replace(/([-_][a-z])/g, group =>-->
+<!--                                group.toUpperCase()-->
+<!--                                    .replace('-', '')-->
+<!--                                    .replace('_', ''));-->
+<!--                            formattedErrors[camelCaseField] = error.errors[field];-->
+<!--                        }-->
+<!--                        displayValidationErrors(formattedErrors);-->
+<!--                    } else {-->
+<!--                        showServerError(error.message || 'خطایی در سرور رخ داده است');-->
+<!--                    }-->
+<!--                });-->
+<!--        }-->
+<!--        function showSuccessMessage() {-->
+<!--            const successMessage = document.getElementById('successMessage');-->
+<!--            const form = document.getElementById('teacherForm');-->
+
+<!--            successMessage.style.display = 'block';-->
+<!--            form.style.display = 'none';-->
+
+<!--            setTimeout(() => {-->
+<!--                window.location.href = 'login.html';-->
+<!--            }, 3000);-->
+<!--        }-->
+
+<!--        function showServerError(message) {-->
+<!--            const serverError = document.getElementById('serverError');-->
+<!--            serverError.textContent = message;-->
+<!--            serverError.style.display = 'block';-->
+<!--            window.scrollTo({top: 0, behavior: 'smooth'});-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -276,13 +850,6 @@
                             تست کننده
                         </label>
                     </div>
-                    <div class="role-option">
-                        <input type="radio" id="roleAdmin" name="role" value="ADMIN">
-                        <label for="roleAdmin">
-                            <i class="fas fa-user-shield role-icon"></i>
-                            مدیر سیستم
-                        </label>
-                    </div>
                 </div>
             </div>
 
@@ -368,7 +935,7 @@
 
             // پاک کردن خطاهای قبلی
             errorElement.textContent = '';
-            field.classList .remove('error-input');
+            field.classList.remove('error-input');
 
             // اگر فیلد خالی است خطا نشان نده
             if (fieldValue === '') {
@@ -510,10 +1077,9 @@
         }
 
         function submitForm(formData) {
-            // تبدیل role از string به مقدار صحیح
             const requestData = {
                 ...formData,
-                role: formData.role // دیگر نیازی به تبدیل نیست چون مقادیر enum با مقادیر سرور همخوانی دارند
+                role: formData.role
             };
 
             fetch('http://localhost:8080/admin/person/register', {
@@ -549,6 +1115,7 @@
                     }
                 });
         }
+
         function showSuccessMessage() {
             const successMessage = document.getElementById('successMessage');
             const form = document.getElementById('teacherForm');
