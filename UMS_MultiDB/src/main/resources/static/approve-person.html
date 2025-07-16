@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت کاربران</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-row {
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .user-row:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-row strong {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .button-group {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button.primary {
+            background-color: #2575fc;
+            color: #fff;
+        }
+
+        button.primary:hover {
+            background-color: #1a5bbf;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        button.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        button.danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        button.danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+
+        .user-details {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .user-details p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #fff;
+        }
+
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>مدیریت کاربران</h1>
+    <div id="users-list"></div>
+</div>
+
+<script>
+
+    async function fetchPendingUsers() {
+        try {
+            const response = await fetch('http://localhost:8080/admin/pending-person');
+            if (!response.ok) {
+                throw new Error('خطا در دریافت کاربران');
+            }
+
+            const users = await response.json();
+            renderUsers(users);
+        } catch (error) {
+            console.error('خطا در ارتباط با سرور:', error);
+        }
+    }
+
+
+    function renderUsers(users) {
+        const usersList = document.getElementById('users-list');
+        usersList.innerHTML = '';
+        users.forEach(user => {
+            const userRow = document.createElement('div');
+            userRow.className = 'user-row fade-in';
+
+            userRow.innerHTML = `
+                <strong>${user.firstName} ${user.lastName}</strong>
+                <div class="button-group">
+                    <button class="primary" onclick="showUserDetails('${user.nationalCode}')">اطلاعات بیشتر</button>
+                    <button class="secondary" onclick="approveUser('${user.nationalCode}')">تایید ثبت نام</button>
+                    <button class="danger" onclick="deleteUser('${user.nationalCode}')">حذف</button>
+                </div>
+                <div class="user-details" id="details-${user.nationalCode}">
+                    <p>کدملی: ${user.nationalCode}</p>
+                    <p>ایمیل: ${user.email}</p>
+                    <p>وضعیت: ${user.status}</p>
+                </div>
+            `;
+
+            usersList.appendChild(userRow);
+        });
+    }
+
+    async function deleteUser(nationalCode) {
+        if (confirm('آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟')) {
+            try {
+                const response = await fetch(`http://localhost:8080/admin/delete-person/${nationalCode}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('کاربر با موفقیت حذف شد.');
+                    fetchPendingUsers();
+                } else {
+                    const errorData = await response.json();
+                    alert(`خطا در حذف کاربر: ${errorData.message || 'خطای ناشناخته'}`);
+                }
+            } catch (error) {
+                console.error('خطا در حذف کاربر:', error);
+                alert('خطا در ارتباط با سرور.');
+            }
+        }
+    }
+
+    function showUserDetails(nationalCode) {
+        const detailsDiv = document.getElementById(`details-${nationalCode}`);
+        detailsDiv.style.display = detailsDiv.style.display === "none" ? "block" : "none";
+    }
+
+    async function approveUser(nationalCode) {
+        try {
+            const response = await fetch(`http://localhost:8080/admin/approve-person/${nationalCode}`, {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                alert('کاربر با موفقیت تایید شد.');
+                fetchPendingUsers();
+            } else {
+                alert('خطا در تأیید کاربر.');
+            }
+        } catch (error) {
+            console.error('خطا در تأیید کاربر:', error);
+        }
+    }
+
+    function editUser(userId) {
+        alert(`ویرایش کاربر با شناسه ${userId}`);
+    }
+
+    fetchPendingUsers();
+</script>
+
+</body>
+</html>

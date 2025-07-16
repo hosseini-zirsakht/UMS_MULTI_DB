@@ -37,11 +37,11 @@ public class DatabaseConfig {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.test")
-    public DataSource testDataSource() {
-        return DataSourceBuilder.create().build();
-    }
+//    @Bean
+//    @ConfigurationProperties(prefix = "spring.datasource.test")
+//    public DataSource testDataSource() {
+//        return DataSourceBuilder.create().build();
+//    }
 
     @Bean
     @Primary
@@ -79,20 +79,20 @@ public class DatabaseConfig {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean testEntityManagerFactory(
-            EntityManagerFactoryBuilder builder,
-            @Qualifier("testDataSource") DataSource dataSource) {
-        return builder
-                .dataSource(dataSource)
-                .packages("com.example.UMS_MultiDB.model.entity")
-                .persistenceUnit("test")
-                .build();
-    }
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean testEntityManagerFactory(
+//            EntityManagerFactoryBuilder builder,
+//            @Qualifier("testDataSource") DataSource dataSource) {
+//        return builder
+//                .dataSource(dataSource)
+//                .packages("com.example.UMS_MultiDB.model.entity")
+//                .persistenceUnit("test")
+//                .build();
+//    }
 
-    @Bean
-    public PlatformTransactionManager testTransactionManager(
-            @Qualifier("testEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
-    }
+//    @Bean
+//    public PlatformTransactionManager testTransactionManager(
+//            @Qualifier("testEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+//        return new JpaTransactionManager(entityManagerFactory);
+//    }
 }

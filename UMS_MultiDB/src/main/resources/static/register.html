@@ -571,7 +571,6 @@
 <!--</script>-->
 <!--</body>-->
 <!--</html>-->
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -905,99 +904,16 @@
         const form = document.getElementById('teacherForm');
         const serverError = document.getElementById('serverError');
 
-        // اعتبارسنجی در زمان تایپ
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('input', function () {
-                validateField(this);
-            });
-        });
-
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-            clearErrors();
-            serverError.style.display = 'none';
-
-            const formData = getFormData();
-            const clientErrors = validateForm(formData);
-
-            if (Object.keys(clientErrors).length > 0) {
-                displayValidationErrors(clientErrors);
-                return;
-            }
-
-            submitForm(formData);
-        });
-
-        function validateField(field) {
-            const fieldId = field.id;
-            const fieldValue = field.value.trim();
-            const errorElement = document.getElementById(`${fieldId}Error`);
-
-            // پاک کردن خطاهای قبلی
-            errorElement.textContent = '';
-            field.classList.remove('error-input');
-
-            // اگر فیلد خالی است خطا نشان نده
-            if (fieldValue === '') {
-                return;
-            }
-
-            let error = '';
-
-            switch(fieldId) {
-                case 'firstName':
-                case 'lastName':
-                    if (fieldValue.length < 2 || fieldValue.length > 50) {
-                        error = 'باید بین ۲ تا ۵۰ کاراکتر باشد';
-                    }
-                    break;
-                case 'username':
-                    if (fieldValue.length < 4 || fieldValue.length > 20) {
-                        error = 'باید بین ۴ تا ۲۰ کاراکتر باشد';
-                    }
-                    break;
-                case 'password':
-                    if (fieldValue.length < 6 || fieldValue.length > 20) {
-                        error = 'باید بین ۶ تا ۲۰ کاراکتر باشد';
-                    }
-                    break;
-                case 'nationalCode':
-                    if (!/^\d{10}$/.test(fieldValue)) {
-                        error = 'کد ملی باید ۱۰ رقم باشد';
-                    }
-                    break;
-                case 'phoneNumber':
-                    if (!/^09\d{9}$/.test(fieldValue)) {
-                        error = 'شماره تلفن معتبر نیست (مثال: 09123456789)';
-                    }
-                    break;
-                case 'email':
-                    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fieldValue)) {
-                        error = 'ایمیل معتبر نیست';
-                    }
-                    break;
-            }
-
-            if (error) {
-                errorElement.textContent = error;
-                field.classList.add('error-input');
-            }
-        }
-
         function clearErrors() {
-            // پاک کردن تمام پیام‌های خطا
             document.querySelectorAll('.error-message').forEach(el => {
                 el.textContent = '';
             });
-
-            // حذف استایل خطا از تمام فیلدها
             document.querySelectorAll('.error-input').forEach(el => {
                 el.classList.remove('error-input');
             });
         }
 
         function displayValidationErrors(errors) {
-            // نمایش خطاهای اعتبارسنجی
             for (const field in errors) {
                 const errorElement = document.getElementById(`${field}Error`);
                 const inputElement = document.getElementById(field);
@@ -1008,10 +924,52 @@
                 }
             }
 
-            // اسکرول به اولین فیلد دارای خطا
             const firstError = document.querySelector('.error-input');
             if (firstError) {
                 firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function validateField(field) {
+            const fieldId = field.id;
+            const fieldValue = field.value.trim();
+            const errorElement = document.getElementById(`${fieldId}Error`);
+
+            errorElement.textContent = '';
+            field.classList.remove('error-input');
+
+            if (fieldValue === '') {
+                return;
+            }
+
+            let error = '';
+            const patterns = {
+                firstName: /^[\u0600-\u06FF\s]{2,50}$/,
+                lastName: /^[\u0600-\u06FF\s]{2,50}$/,
+                username: /^[a-zA-Z0-9_]{4,20}$/,
+                password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{6,20}$/,
+                nationalCode: /^\d{10}$/,
+                phoneNumber: /^09\d{9}$/,
+                email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            };
+
+            const messages = {
+                firstName: 'نام باید بین ۲ تا ۵۰ کاراکتر فارسی باشد',
+                lastName: 'نام خانوادگی باید بین ۲ تا ۵۰ کاراکتر فارسی باشد',
+                username: 'نام کاربری باید بین ۴ تا ۲۰ کاراکتر (انگلیسی، عدد یا _) باشد',
+                password: 'رمز عبور باید بین ۶ تا ۲۰ کاراکتر و شامل حداقل یک حرف بزرگ، یک حرف کوچک و یک عدد باشد',
+                nationalCode: 'کد ملی باید ۱۰ رقم باشد',
+                phoneNumber: 'شماره تلفن معتبر نیست (مثال: 09123456789)',
+                email: 'ایمیل معتبر نیست'
+            };
+
+            if (patterns[fieldId] && !patterns[fieldId].test(fieldValue)) {
+                error = messages[fieldId];
+            }
+
+            if (error) {
+                errorElement.textContent = error;
+                field.classList.add('error-input');
             }
         }
 
@@ -1033,26 +991,26 @@
 
             if (!formData.firstName) {
                 errors.firstName = 'نام الزامی است';
-            } else if (formData.firstName.length < 2 || formData.firstName.length > 50) {
-                errors.firstName = 'نام باید بین ۲ تا ۵۰ کاراکتر باشد';
+            } else if (!/^[\u0600-\u06FF\s]{2,50}$/.test(formData.firstName)) {
+                errors.firstName = 'نام باید بین ۲ تا ۵۰ کاراکتر فارسی باشد';
             }
 
             if (!formData.lastName) {
                 errors.lastName = 'نام خانوادگی الزامی است';
-            } else if (formData.lastName.length < 2 || formData.lastName.length > 50) {
-                errors.lastName = 'نام خانوادگی باید بین ۲ تا ۵۰ کاراکتر باشد';
+            } else if (!/^[\u0600-\u06FF\s]{2,50}$/.test(formData.lastName)) {
+                errors.lastName = 'نام خانوادگی باید بین ۲ تا ۵۰ کاراکتر فارسی باشد';
             }
 
             if (!formData.username) {
                 errors.username = 'نام کاربری الزامی است';
-            } else if (formData.username.length < 4 || formData.username.length > 20) {
-                errors.username = 'نام کاربری باید بین ۴ تا ۲۰ کاراکتر باشد';
+            } else if (!/^[a-zA-Z0-9_]{4,20}$/.test(formData.username)) {
+                errors.username = 'نام کاربری باید بین ۴ تا ۲۰ کاراکتر (انگلیسی، عدد یا _) باشد';
             }
 
             if (!formData.password) {
                 errors.password = 'رمز عبور الزامی است';
-            } else if (formData.password.length < 6 || formData.password.length > 20) {
-                errors.password = 'رمز عبور باید بین ۶ تا ۲۰ کاراکتر باشد';
+            } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{6,20}$/.test(formData.password)) {
+                errors.password = 'رمز عبور باید بین ۶ تا ۲۰ کاراکتر و شامل حداقل یک حرف بزرگ، یک حرف کوچک و یک عدد باشد';
             }
 
             if (!formData.nationalCode) {
@@ -1074,6 +1032,24 @@
             }
 
             return errors;
+        }
+
+        function showSuccessMessage() {
+            const successMessage = document.getElementById('successMessage');
+            const form = document.getElementById('teacherForm');
+
+            successMessage.style.display = 'block';
+            form.style.display = 'none';
+
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 3000);
+        }
+
+        function showServerError(message) {
+            serverError.textContent = message;
+            serverError.style.display = 'block';
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
         function submitForm(formData) {
@@ -1116,24 +1092,28 @@
                 });
         }
 
-        function showSuccessMessage() {
-            const successMessage = document.getElementById('successMessage');
-            const form = document.getElementById('teacherForm');
+        // اعتبارسنجی در زمان تایپ
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function () {
+                validateField(this);
+            });
+        });
 
-            successMessage.style.display = 'block';
-            form.style.display = 'none';
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            clearErrors();
+            serverError.style.display = 'none';
 
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 3000);
-        }
+            const formData = getFormData();
+            const clientErrors = validateForm(formData);
 
-        function showServerError(message) {
-            const serverError = document.getElementById('serverError');
-            serverError.textContent = message;
-            serverError.style.display = 'block';
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
+            if (Object.keys(clientErrors).length > 0) {
+                displayValidationErrors(clientErrors);
+                return;
+            }
+
+            submitForm(formData);
+        });
     });
 </script>
 </body>

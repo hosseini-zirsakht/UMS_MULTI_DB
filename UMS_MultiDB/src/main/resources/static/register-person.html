@@ -270,39 +270,28 @@
             }
 
             let error = '';
+            const patterns = {
+                firstName: /[a-zA-Z]{2,50}/,
+                lastName: /[a-zA-Z]{2,50}/,
+                username: /^\w{4,20}$/,
+                password: /^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[!@#$%&*])[a-zA-Z\d!@#$%&*]{6,}$/,
+                nationalCode: /^\d{10}$/,
+                phoneNumber: /^09\d{9}$/,
+                email: /^(?=[a-zA-Z0-9._%+-]{4,}@gmail\.com$)(?=.*[a-zA-Z])[a-zA-Z0-9._%+-]+@gmail\.com$/
+            };
 
-            switch(fieldId) {
-                case 'firstName':
-                case 'lastName':
-                    if (fieldValue.length < 2 || fieldValue.length > 50) {
-                        error = 'باید بین ۲ تا ۵۰ کاراکتر باشد';
-                    }
-                    break;
-                case 'username':
-                    if (fieldValue.length < 4 || fieldValue.length > 20) {
-                        error = 'باید بین ۴ تا ۲۰ کاراکتر باشد';
-                    }
-                    break;
-                case 'password':
-                    if (fieldValue.length < 6 || fieldValue.length > 20) {
-                        error = 'باید بین ۶ تا ۲۰ کاراکتر باشد';
-                    }
-                    break;
-                case 'nationalCode':
-                    if (!/^\d{10}$/.test(fieldValue)) {
-                        error = 'کد ملی باید ۱۰ رقم باشد';
-                    }
-                    break;
-                case 'phoneNumber':
-                    if (!/^09\d{9}$/.test(fieldValue)) {
-                        error = 'شماره تلفن معتبر نیست (مثال: 09123456789)';
-                    }
-                    break;
-                case 'email':
-                    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fieldValue)) {
-                        error = 'ایمیل معتبر نیست';
-                    }
-                    break;
+            const messages = {
+                firstName: 'نام باید بین ۲ تا ۵۰ کاراکتر  باشد',
+                lastName: 'نام خانوادگی باید بین ۲ تا ۵۰ کاراکتر باشد',
+                username: 'نام کاربری باید بین ۴ تا ۲۰ کاراکتر (انگلیسی، عدد یا _) باشد',
+                password: 'رمز عبور باید بین ۶ تا ۲۰ کاراکتر و شامل حداقل یک حرف بزرگ و کاراکتر خاص باشد',
+                nationalCode: 'کد ملی باید ۱۰ رقم باشد',
+                phoneNumber: 'شماره تلفن معتبر نیست (مثال: 09123456789)',
+                email: 'ایمیل معتبر نیست'
+            };
+
+            if (patterns[fieldId] && !patterns[fieldId].test(fieldValue)) {
+                error = messages[fieldId];
             }
 
             if (error) {
@@ -310,7 +299,6 @@
                 field.classList.add('error-input');
             }
         }
-
         function clearErrors() {
             // پاک کردن تمام پیام‌های خطا
             document.querySelectorAll('.error-message').forEach(el => {
@@ -359,44 +347,35 @@
 
             if (!formData.firstName) {
                 errors.firstName = 'نام الزامی است';
-            } else if (formData.firstName.length < 2 || formData.firstName.length > 50) {
-                errors.firstName = 'نام باید بین ۲ تا ۵۰ کاراکتر باشد';
             }
+
 
             if (!formData.lastName) {
                 errors.lastName = 'نام خانوادگی الزامی است';
-            } else if (formData.lastName.length < 2 || formData.lastName.length > 50) {
-                errors.lastName = 'نام خانوادگی باید بین ۲ تا ۵۰ کاراکتر باشد';
             }
+
 
             if (!formData.username) {
                 errors.username = 'نام کاربری الزامی است';
-            } else if (formData.username.length < 4 || formData.username.length > 20) {
-                errors.username = 'نام کاربری باید بین ۴ تا ۲۰ کاراکتر باشد';
             }
+
 
             if (!formData.password) {
                 errors.password = 'رمز عبور الزامی است';
-            } else if (formData.password.length < 6 || formData.password.length > 20) {
-                errors.password = 'رمز عبور باید بین ۶ تا ۲۰ کاراکتر باشد';
             }
+
 
             if (!formData.nationalCode) {
                 errors.nationalCode = 'کد ملی الزامی است';
-            } else if (!/^\d{10}$/.test(formData.nationalCode)) {
-                errors.nationalCode = 'کد ملی باید ۱۰ رقم باشد';
             }
 
             if (!formData.phoneNumber) {
                 errors.phoneNumber = 'شماره تلفن الزامی است';
-            } else if (!/^09\d{9}$/.test(formData.phoneNumber)) {
-                errors.phoneNumber = 'شماره تلفن معتبر نیست (مثال: 09123456789)';
             }
+
 
             if (!formData.email) {
                 errors.email = 'ایمیل الزامی است';
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-                errors.email = 'ایمیل معتبر نیست';
             }
 
             return errors;

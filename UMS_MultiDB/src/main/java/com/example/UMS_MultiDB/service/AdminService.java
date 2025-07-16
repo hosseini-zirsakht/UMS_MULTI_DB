@@ -8,5 +8,7 @@ public interface AdminService {
 
     Boolean loginAdmin(String username, String password);
 
-     Person register(PersonRequestDTO personRequestDTO, Role role);
+    Person register(PersonRequestDTO personRequestDTO, Role role);
+
+
 }

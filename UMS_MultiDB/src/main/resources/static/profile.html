@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پروفایل کاربری</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #f8f9fa;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .session-error {
+            background: rgba(255, 107, 107, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            display: none;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 20px;
+            font-size: 40px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .user-info h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .detail-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .detail-card h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #a7c4ff;
+            border-bottom: 1px solid rgba(167, 196, 255, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .detail-item {
+            margin-bottom: 10px;
+            display: flex;
+            padding: 8px 0;
+        }
+
+        .detail-item span:first-child {
+            font-weight: 500;
+            width: 120px;
+            display: inline-block;
+            color: #c7d6ff;
+        }
+
+        .detail-item span:last-child {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .btn-logout {
+            padding: 10px 20px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-logout:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        /* استایل بخش نقش‌ها */
+        .role-section {
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .role-card {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid;
+        }
+
+        .role-card h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+
+        .role-icon {
+            margin-left: 10px;
+            font-size: 24px;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .role-test {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .role-dev {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196f3;
+            border: 1px solid #2196f3;
+        }
+
+        .role-user {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+            border: 1px solid #4caf50;
+        }
+
+        .role-admin {
+            background: rgba(156, 39, 176, 0.2);
+            color: #9c27b0;
+            border: 1px solid #9c27b0;
+        }
+
+        .btn-role {
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        .btn-test {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-test:hover {
+            background: #ffb300;
+            transform: translateY(-2px);
+        }
+
+        .btn-dev {
+            background: #2196f3;
+            color: white;
+        }
+
+        .btn-dev:hover {
+            background: #1e88e5;
+            transform: translateY(-2px);
+        }
+
+        .btn-admin {
+            background: #9c27b0;
+            color: white;
+        }
+
+        .btn-admin:hover {
+            background: #8e24aa;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="session-error" id="sessionError">
+        <p>خطا در دسترسی به پروفایل. در حال انتقال به صفحه ورود...</p>
+    </div>
+
+    <header>
+        <h1>پروفایل کاربری</h1>
+        <button class="btn-logout" id="logoutBtn">خروج از سیستم</button>
+    </header>
+
+    <div class="profile-card" id="profileCard">
+        <!-- محتوا توسط JavaScript پر می‌شود -->
+    </div>
+</div>
+
+<script>
+    // نقش‌های سیستم
+    const ROLES = {
+        REGULAR_USER: 'کاربر عادی',
+        TEST_USER: 'کاربر تست',
+        DEVELOPER: 'توسعه دهنده',
+        ADMIN: 'مدیر سیستم'
+    };
+
+    // وضعیت‌های حساب
+    const STATUSES = {
+        PENDING: 'در انتظار تایید',
+        APPROVED: 'تایید شده',
+        REJECTED: 'رد شده',
+        ACTIVE: 'فعال',
+        INACTIVE: 'غیرفعال'
+    };
+
+    // امکانات هر نقش
+    const ROLE_FEATURES = {
+        TEST_USER: {
+            title: 'امکانات کاربر تست',
+            icon: 'fa-vial',
+            color: '255, 193, 7',
+            description: 'شما به عنوان کاربر تست به ابزارهای ویژه تست سیستم دسترسی دارید.',
+            button: {
+                text: 'اجرای تست جدید',
+                action: 'runTest()',
+                class: 'btn-test'
+            }
+        },
+        DEVELOPER: {
+            title: 'ابزارهای توسعه دهنده',
+            icon: 'fa-code',
+            color: '33, 150, 243',
+            description: 'شما به عنوان توسعه دهنده به ابزارهای پیشرفته سیستم دسترسی دارید.',
+            button: {
+                text: 'بازکردن ابزار توسعه',
+                action: 'openDevTools()',
+                class: 'btn-dev'
+            }
+        },
+        ADMIN: {
+            title: 'امکانات مدیریتی',
+            icon: 'fa-shield-alt',
+            color: '156, 39, 176',
+            description: 'شما به عنوان مدیر سیستم به تمام امکانات دسترسی دارید.',
+            button: {
+                text: 'مدیریت کاربران',
+                action: 'manageUsers()',
+                class: 'btn-admin'
+            }
+        },
+        REGULAR_USER: {
+            title: 'کاربر عادی',
+            icon: 'fa-user',
+            color: '76, 175, 80',
+            description: 'شما به عنوان کاربر عادی به سیستم دسترسی دارید.'
+        }
+    };
+
+    // نمایش خطای session
+    function showSessionError() {
+        const errorDiv = document.getElementById('sessionError');
+        errorDiv.style.display = 'block';
+        document.getElementById('profileCard').style.display = 'none';
+
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 3000);
+    }
+
+    // نمایش پروفایل کاربر
+    function displayProfile(profileData) {
+        // اعتبارسنجی داده‌های دریافتی
+        if (!profileData || typeof profileData !== 'object') {
+            console.error('داده‌های پروفایل نامعتبر هستند');
+            showSessionError();
+            return;
+        }
+
+        // تنظیم مقادیر پیش‌فرض
+        const profile = {
+            firstName: '',
+            lastName: '',
+            username: '',
+            nationalCode: '',
+            email: '',
+            phoneNumber: '',
+            role: 'REGULAR_USER',
+            status: 'ACTIVE',
+            createdAt: new Date().toLocaleDateString('fa-IR'),
+            ...profileData
+        };
+
+        // دریافت نقش از پاسخ سرور و تبدیل به فرمت استاندارد
+        let userRole = profile.role || 'REGULAR_USER';
+
+        // تبدیل نقش به فرمت استاندارد در صورت نیاز
+        if (typeof userRole === 'string') {
+            userRole = userRole.toUpperCase().replace(/ /g, '_');
+
+            // اگر نقش در لیست نقش‌های تعریف شده نیست، کاربر عادی در نظر گرفته می‌شود
+            if (!ROLES[userRole]) {
+                console.warn(`نقش ${userRole} شناسایی نشد، کاربر به عنوان عادی در نظر گرفته شد`);
+                userRole = 'REGULAR_USER';
+            }
+        }
+
+        const roleFeatures = ROLE_FEATURES[userRole] || ROLE_FEATURES['REGULAR_USER'];
+        const roleName = ROLES[userRole] || 'کاربر عادی';
+
+        // ایجاد کلاس CSS برای نقش
+        const roleClass = `role-${userRole.toLowerCase().replace(/_/g, '-')}`;
+
+        // ایجاد محتوای پروفایل
+        document.getElementById('profileCard').innerHTML = `
+            <div class="profile-header">
+                <div class="avatar">
+                    ${getAvatarText(profile)}
+                </div>
+                <div class="user-info">
+                    <h2>${profile.firstName || ''} ${profile.lastName || ''}</h2>
+                    <p>
+                        <span class="role-badge ${roleClass}">
+                            ${roleName}
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="profile-details">
+                <div class="detail-card">
+                    <h3>اطلاعات شخصی</h3>
+                    ${createDetailItem('نام', profile.firstName)}
+                    ${createDetailItem('نام خانوادگی', profile.lastName)}
+                    ${createDetailItem('کد ملی', profile.nationalCode)}
+                </div>
+
+                <div class="detail-card">
+                    <h3>اطلاعات تماس</h3>
+                    ${createDetailItem('ایمیل', profile.email)}
+                    ${createDetailItem('شماره تماس', profile.phoneNumber)}
+                    ${createDetailItem('نام کاربری', profile.username)}
+                </div>
+
+                <div class="detail-card">
+                    <h3>وضعیت حساب</h3>
+                    ${createDetailItem('وضعیت', STATUSES[profile.status] || profile.status)}
+                    ${createDetailItem('تاریخ عضویت', profile.createdAt)}
+                </div>
+            </div>
+
+            <div class="role-section">
+                <div class="role-card" style="
+                    background: rgba(${roleFeatures.color}, 0.1);
+                    border-color: rgba(${roleFeatures.color}, 0.3);">
+                    <h3><i class="fas ${roleFeatures.icon} role-icon"></i> ${roleFeatures.title}</h3>
+                    <p>${roleFeatures.description}</p>
+                    ${roleFeatures.button ? `
+                    <button class="btn-role ${roleFeatures.button.class}"
+                        onclick="${roleFeatures.button.action}">
+                        <i class="fas ${roleFeatures.icon}"></i> ${roleFeatures.button.text}
+                    </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+
+        // اضافه کردن event listener برای دکمه خروج
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+    }
+
+    // تابع کمکی برای ایجاد آیتم‌های اطلاعات
+    function createDetailItem(label, value) {
+        return `
+            <div class="detail-item">
+                <span>${label}:</span>
+                <span>${value || '-'}</span>
+            </div>
+        `;
+    }
+
+    // تابع کمکی برای متن آواتار
+    function getAvatarText(profile) {
+        if (profile.firstName) return profile.firstName.charAt(0);
+        if (profile.username) return profile.username.charAt(0);
+        return 'U';
+    }
+
+    // تابع بارگذاری پروفایل
+    async function loadProfile() {
+        try {
+            // اول از localStorage بررسی می‌کنیم
+            const localData = localStorage.getItem('userData');
+            if (localData) {
+                try {
+                    const parsedData = JSON.parse(localData);
+                    if (parsedData?.username) {
+                        displayProfile(parsedData);
+                        return;
+                    }
+                } catch (e) {
+                    console.error('خطا در پردازش داده‌های ذخیره شده:', e);
+                }
+            }
+
+            // اگر localStorage نداشت، از سرور می‌گیریم
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                showSessionError();
+                return;
+            }
+
+            const response = await fetch('http://localhost:8080/auth/profile', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('خطا در دریافت اطلاعات پروفایل');
+            }
+
+            const profile = await response.json();
+
+            if (!profile?.username) {
+                throw new Error('اطلاعات پروفایل ناقص است');
+            }
+
+            // ذخیره تمام اطلاعات پروفایل شامل نقش در localStorage
+            localStorage.setItem('userData', JSON.stringify(profile));
+            displayProfile(profile);
+
+        } catch (error) {
+            console.error('Error loading profile:', error);
+            showSessionError();
+        }
+    }
+
+    // تابع خروج از سیستم
+    function logout() {
+        localStorage.removeItem('jwtToken');
+        localStorage.removeItem('userData');
+        window.location.href = 'login.html';
+    }
+
+    // توابع مربوط به نقش‌ها
+    function runTest() {
+        alert('درخواست اجرای تست جدید ارسال شد!');
+        // اینجا می‌توانید درخواست به سرور برای اجرای تست ارسال کنید
+    }
+
+    function openDevTools() {
+        alert('ابزار توسعه در حال بارگذاری...');
+        // اینجا می‌توانید صفحه ابزار توسعه را باز کنید
+    }
+
+    function manageUsers() {
+        alert('صفحه مدیریت کاربران در حال بارگذاری...');
+        // اینجا می‌توانید صفحه مدیریت کاربران را باز کنید
+    }
+
+    // شروع بارگذاری پروفایل هنگام لود صفحه
+    document.addEventListener('DOMContentLoaded', loadProfile);
+</script>
+</body>
+</html>

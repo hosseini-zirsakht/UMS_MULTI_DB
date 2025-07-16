@@ -7,25 +7,26 @@ import com.example.UMS_MultiDB.model.entity.Person;
 import java.util.List;
 import java.util.Optional;
 
-public interface RegularUserService extends BaseService {
+public interface BaseService {
 
-    Person register(PersonRequestDTO personRequestDTO);
 
-    Person approvePerson(String nationalCode);
+    Person authenticate(String username, String password);
 
-    List<PersonResponseDTO> getPendingPerson();
+    Optional<Person> findByUsername(String username);
+
+    Optional<Person> findUserByNationalCode(String nationalCode);
+
+    boolean updatePasswordByNationalCode(String nationalCode, String newPassword);
 
     PersonResponseDTO convertToDTO(Person person);
 
-    @Override
-    Person authenticate(String username, String password);
+    boolean updateByNationalCode(String nationalCode, PersonRequestDTO personRequestDTO);
 
-    @Override
-    Optional<Person> findByUsername(String username);
+    boolean isValidUpdate(String currentNationalCode, PersonRequestDTO requestDTO);
 
-    @Override
-    Optional<Person> findUserByNationalCode(String nationalCode);
+    List<PersonResponseDTO> getApprovedPerson();
 
-    @Override
-    boolean updatePasswordByNationalCode(String nationalCode, String newPassword);
+    void deleteByNationalCode(String nationalCode);
+
+    Optional<Person> checkAccount(String nationalCode, String phoneNumber);
 }

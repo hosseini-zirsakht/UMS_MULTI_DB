@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت کاربران</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-row {
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .user-row:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-row strong {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .button-group {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button.primary {
+            background-color: #2575fc;
+            color: #fff;
+        }
+
+        button.primary:hover {
+            background-color: #1a5bbf;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        button.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        button.danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        button.danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .user-details {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        .user-details p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.2);
+            outline: none;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-cancel:hover {
+            background: #e9ecef;
+        }
+
+        .btn-save {
+            background: #2575fc;
+            color: white;
+            border: none;
+        }
+
+        .btn-save:hover {
+            background: #1a5bbf;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>مدیریت کاربران</h1>
+    <div id="users-list"></div>
+</div>
+
+<!-- Edit User Modal -->
+<!--<div class="modal-overlay" id="editModal">-->
+<!--    <div class="modal-container">-->
+<!--        <div class="modal-header">-->
+<!--            <h3 class="modal-title">ویرایش کاربر</h3>-->
+<!--            <button class="close-btn" onclick="closeEditModal()">×</button>-->
+<!--        </div>-->
+<!--        <form id="editUserForm">-->
+<!--            <input type="hidden" id="editUserId">-->
+<!--            <div class="form-group">-->
+<!--                <label for="editFirstName">نام</label>-->
+<!--                <input type="text" id="editFirstName" class="form-control">-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label for="editLastName">نام خانوادگی</label>-->
+<!--                <input type="text" id="editLastName" class="form-control">-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label for="editNationalCode">کد ملی</label>-->
+<!--                <input type="text" id="editNationalCode" class="form-control">-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label for="editEmail">ایمیل</label>-->
+<!--                <input type="email" id="editEmail" class="form-control">-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-cancel" onclick="closeEditModal()">انصراف</button>-->
+<!--                <button type="button" class="btn btn-save" onclick="updateUser()" id="saveBtn">ذخیره تغییرات</button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+
+<script>
+    // Global Variables
+    let currentEditingUser = null;
+
+    // DOM Loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchPendingUsers();
+    });
+
+    // Fetch Users
+    async function fetchPendingUsers() {
+        try {
+            const response = await fetch('http://localhost:8080/admin/approved-person');
+            if (!response.ok) {
+                throw new Error('خطا در دریافت کاربران');
+            }
+
+            const users = await response.json();
+            renderUsers(users);
+        } catch (error) {
+            console.error('خطا در ارتباط با سرور:', error);
+            alert('خطا در دریافت لیست کاربران');
+        }
+    }
+
+    // Render Users
+    function renderUsers(users) {
+        const usersList = document.getElementById('users-list');
+        usersList.innerHTML = '';
+
+        if (users.length === 0) {
+            usersList.innerHTML = '<p style="color: #fff; text-align: center;">هیچ کاربری یافت نشد</p>';
+            return;
+        }
+
+        users.forEach(user => {
+            const userRow = document.createElement('div');
+            userRow.className = 'user-row fade-in';
+
+            userRow.innerHTML = `
+                <strong>${user.firstName} ${user.lastName}</strong>
+                <div class="button-group">
+                    <button class="primary" onclick="showUserDetails('${user.nationalCode}')">اطلاعات بیشتر</button>
+<!--                    <button class="secondary" onclick="openEditModal('${user.nationalCode}')">ویرایش</button>-->
+                    <button class="danger" onclick="deleteUser('${user.nationalCode}')">حذف</button>
+                </div>
+                <div class="user-details" id="details-${user.nationalCode}">
+                    <p>کدملی: ${user.nationalCode}</p>
+                    <p>ایمیل: ${user.email || '---'}</p>
+                    <p>نام: ${user.firstName || '---'}</p>
+                    <p>نام خانوادگی : ${user.lastName || '---'}</p>
+                    <p>شماره تماس  : ${user.phoneNumber || '---'}</p>
+                    <p>نام کاربری  : ${user.username || '---'}</p>
+                </div>
+            `;
+
+            usersList.appendChild(userRow);
+        });
+    }
+
+    // Delete User
+    async function deleteUser(nationalCode) {
+        if (confirm('آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟')) {
+            try {
+                const response = await fetch(`http://localhost:8080/admin/delete-person/${nationalCode}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('کاربر با موفقیت حذف شد.');
+                    fetchPendingUsers();
+                } else {
+                    const errorData = await response.json();
+                    alert(`خطا در حذف کاربر: ${errorData.message || 'خطای ناشناخته'}`);
+                }
+            } catch (error) {
+                console.error('خطا در حذف کاربر:', error);
+                alert('خطا در ارتباط با سرور.');
+            }
+        }
+    }
+
+    // Show User Details
+    function showUserDetails(nationalCode) {
+        const detailsDiv = document.getElementById(`details-${nationalCode}`);
+        detailsDiv.style.display = detailsDiv.style.display === "none" ? "block" : "none";
+    }
+
+    // Open Edit Modal
+    // async function openEditModal(nationalCode) {
+    //     try {
+    //         // Show loading state
+    //         document.getElementById('saveBtn').innerHTML = '<span class="loading"></span>در حال بارگذاری...';
+    //         document.getElementById('saveBtn').disabled = true;
+    //
+    //         const response = await fetch(`http://localhost:8080/admin/persons/${nationalCode}`);
+    //
+    //         if (!response.ok) {
+    //             throw new Error('خطا در دریافت اطلاعات کاربر');
+    //         }
+    //
+    //         const user = await response.json();
+    //         currentEditingUser = user;
+    //
+    //         // Fill form with user data
+    //         document.getElementById('editUserId').value = user.nationalCode;
+    //         document.getElementById('editFirstName').value = user.firstName;
+    //         document.getElementById('editLastName').value = user.lastName;
+    //         document.getElementById('editNationalCode').value = user.nationalCode;
+    //         document.getElementById('editEmail').value = user.email || '';
+    //
+    //         // Show modal
+    //         document.getElementById('editModal').classList.add('active');
+    //         document.body.style.overflow = 'hidden';
+    //
+    //     } catch (error) {
+    //         console.error('Error loading user data:', error);
+    //         alert('خطا در دریافت اطلاعات کاربر');
+    //     } finally {
+    //         // Reset button state
+    //         document.getElementById('saveBtn').innerHTML = 'ذخیره تغییرات';
+    //         document.getElementById('saveBtn').disabled = false;
+    //     }
+    // }
+
+    // Close Edit Modal
+    function closeEditModal() {
+        document.getElementById('editModal').classList.remove('active');
+        document.body.style.overflow = 'auto';
+        currentEditingUser = null;
+    }
+
+    // Update User
+    async function updateUser() {
+        const nationalCode = document.getElementById('editUserId').value;
+        const firstName = document.getElementById('editFirstName').value;
+        const lastName = document.getElementById('editLastName').value;
+        const email = document.getElementById('editEmail').value;
+
+        // Validate inputs
+        if (!firstName || !lastName || !nationalCode) {
+            alert('لطفاً تمام فیلدهای ضروری را پر کنید');
+            return;
+        }
+
+        if (!confirm('آیا از ذخیره تغییرات اطمینان دارید؟')) {
+            return;
+        }
+
+        try {
+            // Show loading state
+            document.getElementById('saveBtn').innerHTML = '<span class="loading"></span>در حال ذخیره...';
+            document.getElementById('saveBtn').disabled = true;
+
+            const response = await fetch(`http://localhost:8080/admin/update/person/${currentNationalCode}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email: email || null
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('خطا در بروزرسانی کاربر');
+            }
+
+            // Close modal and refresh list
+            closeEditModal();
+            fetchPendingUsers();
+            alert('تغییرات با موفقیت ذخیره شد');
+
+        } catch (error) {
+            console.error('Error updating user:', error);
+            alert('خطا در بروزرسانی کاربر');
+        } finally {
+            // Reset button state
+            document.getElementById('saveBtn').innerHTML = 'ذخیره تغییرات';
+            document.getElementById('saveBtn').disabled = false;
+        }
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('editModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeEditModal();
+        }
+    });
+</script>
+
+</body>
+</html>
