@@ -70,7 +70,6 @@ public class ExcelPersonRepository {
     private void createHeaderRow(Sheet sheet, Workbook workbook) {
         Row headerRow = sheet.createRow(0);
 
-        // استایل هدر
         CellStyle headerStyle = workbook.createCellStyle();
         headerStyle.setFillForegroundColor(IndexedColors.BLUE.getIndex());
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
@@ -82,7 +81,6 @@ public class ExcelPersonRepository {
         headerFont.setFontHeightInPoints((short) 12);
         headerStyle.setFont(headerFont);
 
-        // عنوان ستون‌ها
         String[] headers = {
                 "National Code", "Username", "Password", "Email",
                 "Status", "First Name", "Last Name", "Phone Number", "Role"
@@ -119,16 +117,15 @@ public class ExcelPersonRepository {
         dataStyle.setBorderLeft(BorderStyle.THIN);
         dataStyle.setBorderRight(BorderStyle.THIN);
 
-        // پر کردن تمام فیلدها به صورت متن
         safeSetCellValue(row, 0, user.getNationalCode(), dataStyle);
         safeSetCellValue(row, 1, user.getUsername(), dataStyle);
         safeSetCellValue(row, 2, user.getPassword(), dataStyle);
         safeSetCellValue(row, 3, user.getEmail(), dataStyle);
-        safeSetCellValue(row, 4, user.getStatus().name(), dataStyle); // Status به صورت متن
+        safeSetCellValue(row, 4, user.getStatus().name(), dataStyle);
         safeSetCellValue(row, 5, user.getFirstName(), dataStyle);
         safeSetCellValue(row, 6, user.getLastName(), dataStyle);
         safeSetCellValue(row, 7, user.getPhoneNumber(), dataStyle);
-        safeSetCellValue(row, 8, user.getRole().name(), dataStyle); // Role به صورت متن
+        safeSetCellValue(row, 8, user.getRole().name(), dataStyle);
     }
 
     private void safeSetCellValue(Row row, int cellIndex, String value, CellStyle style) {
@@ -152,10 +149,12 @@ public class ExcelPersonRepository {
              Workbook workbook = WorkbookFactory.create(inputStream)) {
 
             Sheet sheet = workbook.getSheet(SHEET_NAME);
-            if (sheet == null) return Optional.empty();
+            if (sheet == null)
+                return Optional.empty();
 
             for (Row row : sheet) {
-                if (row.getRowNum() == 0) continue;
+                if (row.getRowNum() == 0)
+                    continue;
 
                 Cell usernameCell = row.getCell(1);
                 if (usernameCell != null && usernameCell.getStringCellValue().equals(username)) {
@@ -202,13 +201,12 @@ public class ExcelPersonRepository {
                     Person person = new Person();
                     person.setId((long) row.getCell(0).getNumericCellValue());
                     person.setNationalCode(currentNationalCode);
-                    // سایر فیلدها...
 
                     return Optional.of(person);
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("خطا در پردازش فایل اکسل", e);
+            throw new RuntimeException("Error processing Excel file", e);
         }
 
         return Optional.empty();
@@ -272,7 +270,6 @@ public class ExcelPersonRepository {
         user.setPassword(getStringCellValue(row, 2));
         user.setEmail(getStringCellValue(row, 3));
 
-        // خواندن Status به صورت متن
         String statusValue = getStringCellValue(row, 4);
         if (!statusValue.isEmpty()) {
             try {
@@ -288,13 +285,11 @@ public class ExcelPersonRepository {
         user.setLastName(getStringCellValue(row, 6));
         user.setPhoneNumber(getStringCellValue(row, 7));
 
-        // خواندن Role به صورت متن
         String roleValue = getStringCellValue(row, 8);
         if (!roleValue.isEmpty()) {
             try {
                 user.setRole(Role.valueOf(roleValue));
             } catch (IllegalArgumentException e) {
-                // مقدار پیش‌فرض برای نقش اگر نامعتبر بود
             }
         }
 
@@ -364,7 +359,7 @@ public class ExcelPersonRepository {
         }
     }
 
-    private List<Person> readFromExcel() {
+    public List<Person> readFromExcel() {
         List<Person> persons = new ArrayList<>();
 
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(FILE_PATH)) {

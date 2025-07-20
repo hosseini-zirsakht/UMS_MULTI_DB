@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="users_report"
+              pageWidth="595"
+              pageHeight="842"
+              columnWidth="555"
+              leftMargin="20"
+              rightMargin="20"
+              topMargin="20"
+              bottomMargin="20">
+
+    <!-- استایل‌های ساده -->
+    <style name="tableHeader" mode="Opaque" backcolor="#3F51B5" isBold="true" forecolor="#FFFFFF"/>
+    <style name="tableRow" mode="Opaque" backcolor="#FFFFFF"/>
+    <style name="alternateRow" mode="Opaque" backcolor="#F5F5F5"/>
+
+    <!-- پارامترها و فیلدها -->
+    <parameter name="REPORT_TITLE" class="java.lang.String"/>
+    <parameter name="REPORT_DATE" class="java.util.Date"/>
+
+    <field name="firstName" class="java.lang.String"/>
+    <field name="lastName" class="java.lang.String"/>
+    <field name="nationalCode" class="java.lang.String"/>
+    <field name="phoneNumber" class="java.lang.String"/>
+    <field name="email" class="java.lang.String"/>
+
+    <!-- عنوان گزارش -->
+    <title>
+        <band height="80">
+            <staticText>
+                <reportElement x="0" y="20" width="555" height="30" forecolor="#3F51B5"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Users Report]]></text>
+            </staticText>
+            <textField pattern="yyyy/MM/dd HH:mm">
+                <reportElement x="0" y="50" width="555" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{REPORT_DATE}]]></textFieldExpression>
+            </textField>
+            <line>
+                <reportElement x="0" y="78" width="555" height="1"/>
+                <graphicElement>
+                    <pen lineWidth="1.0" lineColor="#3F51B5"/>
+                </graphicElement>
+            </line>
+        </band>
+    </title>
+
+    <!-- هدر جدول -->
+    <columnHeader>
+        <band height="30">
+            <rectangle>
+                <reportElement x="0" y="0" width="555" height="30" style="tableHeader"/>
+            </rectangle>
+
+            <staticText>
+                <reportElement x="0" y="0" width="100" height="30"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[First Name]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="100" y="0" width="100" height="30"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Last Name]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="200" y="0" width="100" height="30"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[National Code]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="300" y="0" width="120" height="30"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Phone]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="420" y="0" width="135" height="30"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Email]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <!-- محتوای گزارش -->
+    <detail>
+        <band height="25">
+            <rectangle>
+                <reportElement x="0" y="0" width="555" height="25" style="tableRow"/>
+            </rectangle>
+
+            <textField>
+                <reportElement x="0" y="0" width="100" height="25"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{firstName}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="100" y="0" width="100" height="25"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{lastName}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="200" y="0" width="100" height="25"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{nationalCode}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="300" y="0" width="120" height="25"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{phoneNumber}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="420" y="0" width="135" height="25"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- پاورقی -->
+    <pageFooter>
+        <band height="30">
+            <line>
+                <reportElement x="0" y="0" width="555" height="1"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineColor="#3F51B5"/>
+                </graphicElement>
+            </line>
+            <textField>
+                <reportElement x="0" y="10" width="555" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="10" isItalic="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER} + " of " + $V{PAGE_COUNT}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+</jasperReport>

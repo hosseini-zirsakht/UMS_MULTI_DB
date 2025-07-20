@@ -23,11 +23,11 @@ public class DatabaseRouter {
         this.devDataSource = devDataSource;
     }
 
-    public DataSource getMainDataSource(Role role){
-        return (DataSource) switch (role){
+    public Object getDataSource(Role role) {
+        return switch (role) {
             case ADMIN, REGULAR_USER -> mainDataSource;
             case DEVELOPER -> devDataSource;
-            case TEST_USER ->  excelPersonRepository;
+            case TEST_USER -> excelPersonRepository;
         };
     }
 }

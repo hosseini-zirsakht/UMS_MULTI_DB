@@ -944,8 +944,8 @@
 
             let error = '';
             const patterns = {
-                firstName: /^[\u0600-\u06FF\s]{2,50}$/,
-                lastName: /^[\u0600-\u06FF\s]{2,50}$/,
+                firstName: /[َA-Za-z]{2,50}/,
+                lastName: /[A-Za-z]{2,50}/,
                 username: /^[a-zA-Z0-9_]{4,20}$/,
                 password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*]{6,20}$/,
                 nationalCode: /^\d{10}$/,
@@ -954,8 +954,8 @@
             };
 
             const messages = {
-                firstName: 'نام باید بین ۲ تا ۵۰ کاراکتر فارسی باشد',
-                lastName: 'نام خانوادگی باید بین ۲ تا ۵۰ کاراکتر فارسی باشد',
+                firstName: 'نام باید بین ۲ تا ۵۰ کاراکتر  باشد',
+                lastName: 'نام خانوادگی باید بین ۲ تا ۵۰ کاراکتر  باشد',
                 username: 'نام کاربری باید بین ۴ تا ۲۰ کاراکتر (انگلیسی، عدد یا _) باشد',
                 password: 'رمز عبور باید بین ۶ تا ۲۰ کاراکتر و شامل حداقل یک حرف بزرگ، یک حرف کوچک و یک عدد باشد',
                 nationalCode: 'کد ملی باید ۱۰ رقم باشد',
@@ -991,13 +991,13 @@
 
             if (!formData.firstName) {
                 errors.firstName = 'نام الزامی است';
-            } else if (!/^[\u0600-\u06FF\s]{2,50}$/.test(formData.firstName)) {
+            } else if (!/^[َA-Za-z]{2,50}$/.test(formData.firstName)) {
                 errors.firstName = 'نام باید بین ۲ تا ۵۰ کاراکتر فارسی باشد';
             }
 
             if (!formData.lastName) {
                 errors.lastName = 'نام خانوادگی الزامی است';
-            } else if (!/^[\u0600-\u06FF\s]{2,50}$/.test(formData.lastName)) {
+            } else if (!/^[َA-Za-z]{2,50}$/.test(formData.lastName)) {
                 errors.lastName = 'نام خانوادگی باید بین ۲ تا ۵۰ کاراکتر فارسی باشد';
             }
 

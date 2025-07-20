@@ -11,26 +11,20 @@ import com.example.UMS_MultiDB.service.impl.AdminServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Optional;
 
 @SpringBootApplication
-public class UmsMultiDbApplication {
-
-
+public class UMS_MultiDBApplication extends SpringBootServletInitializer {
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(UMS_MultiDBApplication.class);
+    }
 
     public static void main(String[] args) {
-        SpringApplication.run(UmsMultiDbApplication.class, args);
-         ExcelPersonRepository excelPersonRepository = new ExcelPersonRepository();
+        SpringApplication.run(UMS_MultiDBApplication.class, args);
     }
-
-
-    @Bean
-    public CommandLineRunner demo(BaseService adminService) {
-        return args -> {
-//            adminService.deleteByNationalCode("5556565656");
-        };
-    }
-
 }

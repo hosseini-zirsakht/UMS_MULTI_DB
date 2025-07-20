@@ -1,4 +1,170 @@
-    <!DOCTYPE html>
+<!--    <!DOCTYPE html>-->
+<!--<html lang="fa">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>داشبورد ادمین</title>-->
+<!--    <style>-->
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            background: linear-gradient(135deg, #6a11cb, #2575fc);-->
+<!--            color: #fff;-->
+<!--            padding: 20px;-->
+<!--            min-height: 100vh;-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            max-width: 1200px;-->
+<!--            margin: 0 auto;-->
+<!--            background: rgba(255, 255, 255, 0.1);-->
+<!--            border-radius: 15px;-->
+<!--            backdrop-filter: blur(10px);-->
+<!--            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);-->
+<!--            padding: 20px;-->
+<!--            border: 1px solid rgba(255, 255, 255, 0.2);-->
+<!--        }-->
+
+<!--        h1 {-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 20px;-->
+<!--            font-size: 24px;-->
+<!--            color: #fff;-->
+<!--        }-->
+
+<!--        .dashboard-cards {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));-->
+<!--            gap: 20px;-->
+<!--        }-->
+
+<!--        .card {-->
+<!--            background: rgba(255, 255, 255, 0.2);-->
+<!--            border-radius: 10px;-->
+<!--            padding: 20px;-->
+<!--            text-align: center;-->
+<!--            transition: all 0.3s ease;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+
+<!--        .card:hover {-->
+<!--            background: rgba(255, 255, 255, 0.3);-->
+<!--            transform: translateY(-5px);-->
+<!--            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);-->
+<!--        }-->
+<!--        -->
+<!--        .card h2 {-->
+<!--            font-size: 18px;-->
+<!--            margin-bottom: 10px;-->
+<!--            color: #fff;-->
+<!--        }-->
+
+<!--        .card p {-->
+<!--            font-size: 14px;-->
+<!--            color: #ddd;-->
+<!--        }-->
+
+<!--        @keyframes fadeIn {-->
+<!--            from {-->
+<!--                opacity: 0;-->
+<!--                transform: translateY(-10px);-->
+<!--            }-->
+<!--            to {-->
+<!--                opacity: 1;-->
+<!--                transform: translateY(0);-->
+<!--            }-->
+<!--        }-->
+
+<!--        .fade-in {-->
+<!--            animation: fadeIn 0.5s ease-out;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="container">-->
+<!--    <h1>داشبورد ادمین</h1>-->
+<!--    <div class="dashboard-cards">-->
+<!--        <div class="card fade-in" onclick="navigateTo('register')">-->
+<!--            <h2>ثبت نام </h2>-->
+<!--        </div>-->
+
+<!--        <div class="card fade-in" onclick="navigateTo('approve-users')">-->
+<!--            <h2>تایید ثبت نام کاربران</h2>-->
+<!--            <p>تایید یا رد درخواست‌های ثبت نام کاربران.</p>-->
+<!--        </div>-->
+
+<!--        <div class="card fade-in" onclick="navigateTo('search')">-->
+<!--            <h2>مشاهده / حذف  </h2>-->
+
+<!--        </div>-->
+
+
+<!--        <div class="card fade-in" onclick="navigateTo('update')">-->
+<!--            <h2>ویرایش کاربر </h2>-->
+<!--        </div>-->
+
+<!--        <div class="card fade-in" onclick="generateReport()">-->
+<!--            <h2>دریافت گزارش کاربران</h2>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    function navigateTo(page) {-->
+<!--        switch (page) {-->
+<!--            case 'register':-->
+<!--                window.location.href = 'register.html';-->
+<!--                break;-->
+<!--            case 'approve-users':-->
+<!--                window.location.href = 'approve-person.html';-->
+<!--                break;-->
+<!--            case 'search':-->
+<!--                window.location.href = 'Delete-and-view.html';-->
+<!--                break;-->
+<!--            case 'update':-->
+<!--                window.location.href = 'update.html';-->
+<!--                break;-->
+<!--            default:-->
+<!--                alert('صفحه مورد نظر یافت نشد!');-->
+<!--        }-->
+<!--    }-->
+
+<!--    function generateReport() {-->
+<!--        fetch('/reports/users')-->
+<!--            .then(response => {-->
+<!--                if (!response.ok) {-->
+<!--                    throw new Error('خطا در دریافت گزارش');-->
+<!--                }-->
+<!--                return response.blob();-->
+<!--            })-->
+<!--            .then(blob => {-->
+<!--                // ایجاد لینک دانلود-->
+<!--                const url = window.URL.createObjectURL(blob);-->
+<!--                const a = document.createElement('a');-->
+<!--                a.href = url;-->
+<!--                a.download = 'users_report.pdf';-->
+<!--                document.body.appendChild(a);-->
+<!--                a.click();-->
+<!--                window.URL.revokeObjectURL(url);-->
+<!--                document.body.removeChild(a);-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Error:', error);-->
+<!--                alert('خطا در دریافت گزارش: ' + error.message);-->
+<!--            });-->
+<!--    }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
@@ -69,6 +235,15 @@
             color: #ddd;
         }
 
+        .card.report-card {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .card.report-card:hover {
+            background: rgba(255, 215, 0, 0.3);
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -101,17 +276,48 @@
 
         <div class="card fade-in" onclick="navigateTo('search')">
             <h2>مشاهده / حذف  </h2>
-
         </div>
-
 
         <div class="card fade-in" onclick="navigateTo('update')">
             <h2>ویرایش کاربر </h2>
+        </div>
+
+        <div class="card fade-in report-card" onclick="generateReport()">
+            <h2>دریافت گزارش کاربران</h2>
+            <p>دانلود لیست کاربران به صورت PDF</p>
         </div>
     </div>
 </div>
 
 <script>
+    function generateReport() {
+        // نمایش پیغام در حال بارگذاری
+        const loading = alert('در حال تهیه گزارش... لطفا صبر کنید');
+
+        fetch('http://localhost:8080/reports/users')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('خطا در دریافت گزارش');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                // ایجاد لینک دانلود
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'users_report_' + new Date().toISOString().slice(0, 10) + '.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('خطا در دریافت گزارش: ' + error.message);
+            });
+    }
+
     function navigateTo(page) {
         switch (page) {
             case 'register':
